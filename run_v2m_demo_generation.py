@@ -106,6 +106,9 @@ def parse_args():
                         "use 10-30 for long videos or limited GPU memory")
     p.add_argument("--overwrite", action="store_true",
                    help="recompute cached detection / camera / SAM features")
+    p.add_argument("--max_gpu_mem_gb", type=float, default=None,
+                   help="cap this process's GPU memory (GB) so it fails before starving other jobs "
+                        "sharing the card, e.g. on a cluster node; default: no cap")
     return p.parse_args()
 
 
@@ -125,6 +128,12 @@ def main():
 
     if args.device.startswith("cuda:"):
         torch.cuda.set_device(args.device)  # YOLOX builds its grids on the current device
+    if args.max_gpu_mem_gb is not None and args.device.startswith("cuda"):
+        dev = torch.cuda.current_device()
+        total = torch.cuda.get_device_properties(dev).total_memory
+        frac = min(1.0, args.max_gpu_mem_gb * 1024 ** 3 / total)
+        torch.cuda.set_per_process_memory_fraction(frac, dev)
+        print(f"GPU memory cap: {args.max_gpu_mem_gb:g} GB ({frac:.0%} of device {dev})")
     os.chdir(REPO_ROOT)  # body-model / asset paths are repo-relative
 
     from flowhmr.pipeline.v2m_inference import V2MInferenceEngine

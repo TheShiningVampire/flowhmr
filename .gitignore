@@ -1,5 +1,6 @@
 # outputs
 output/
+/output          # also when output is a symlink to bulk storage
 runs/
 work_*/
 grpo_phc_reward_cache*/

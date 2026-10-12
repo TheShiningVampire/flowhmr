@@ -42,6 +42,26 @@ The motion contains `poses (T, 52, 3)` and `trans (T, 3)`. FBX is also exported
 when the optional SDK is installed; see [install.md](install.md).
 Extracted features are cached next to the result for reuse.
 
+## Visualize the output
+
+`tools/render_motion.py` renders a motion `.npz` as a shaded SMPL-H mesh video, optionally
+side by side with the source video, without a browser or OpenGL:
+
+```bash
+python tools/render_motion.py output/example/flowhmr_latest.npz output/example/flowhmr_latest.mp4 \
+    --video output/example/example_30fps.mp4 --size 720
+```
+
+Use `--azimuth`, `--elev` and `--dist` to move the camera. The web demo
+([web_demo.md](web_demo.md)) remains the interactive viewer.
+
+## Shared GPUs
+
+On a card shared with other jobs (for example a cluster node), pass `--max_gpu_mem_gb <GB>` to
+`run_v2m_demo_generation.py`. The process is then capped at that amount and fails with an
+out-of-memory error itself instead of starving the other jobs. Combine with `--vggt_interval 10`
+to stay under a small cap; the bundled example then peaks well below 10 GB.
+
 ## Adjust settings
 
 See [params.md](params.md#command-line-inference) for every CLI option,
