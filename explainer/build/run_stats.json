@@ -1,0 +1,25 @@
+{
+ "t_detect": 7,
+ "t_camera": 18,
+ "t_feat": 460,
+ "t_gen": 1,
+ "t_load": 20,
+ "t_total": 509,
+ "peak_gb": 10.2,
+ "out_frames": 151,
+ "vggt_interval": 10,
+ "cap_gb": 14.0,
+ "in_frames": 121,
+ "in_fps": 24,
+ "in_res": "1920x1080",
+ "changes": [
+  "run_v2m_demo_generation.py: new --max_gpu_mem_gb flag caps the process on a shared GPU (used for this run: 14 GB cap next to five training jobs)",
+  "tools/render_motion.py: offline SMPL-H mesh renderer (numpy + PIL + ffmpeg), mesh-only or side by side with the source video; no OpenGL, no browser",
+  "docs/inference.md: new sections on visualizing the output and running on shared GPUs",
+  ".gitignore: ignore output when it is a symlink to bulk storage (the output/ pattern missed symlinks)",
+  "Branch feat/shared-gpu-cap-and-offline-render on github.com/TheShiningVampire/flowhmr"
+ ],
+ "narr_run": "Now the real run on the bundled example: a five second, nineteen twenty by ten eighty clip at twenty four frames per second, transcoded to thirty. Loading all models took 20 seconds. Detection and tracking took 7 seconds, camera estimation 18 seconds with VGGT Omega on every 10th frame, body feature extraction 460 seconds, and FlowHMR generation itself about 1 second for 151 frames. The whole script finished in 509 seconds, with a peak of 10.2 gigabytes of GPU memory, well under the 14.0 gigabyte cap, on a card that was already running five other jobs.",
+ "narr_demo": "On the left is the input video. On the right is the motion FlowHMR generated, rendered as the SMPL H mesh in world space with my offline renderer. Watch the feet and the root trajectory: this is exactly the part the physics reward was trained to fix, and it is what the PHC plus controller would be asked to track.",
+ "narr_changes": "Everything I changed lives on one branch in the fork. First, a memory cap flag for the demo script, so it can share a GPU with other jobs on a cluster. Second, an offline renderer that turns the output motion into a shaded mesh video, or a side by side with the source, without a browser or OpenGL. Third, a gitignore fix for output directories that are symlinks to bulk storage. And a short note in the docs on running on shared GPUs. The branch is pushed to the fork."
+}

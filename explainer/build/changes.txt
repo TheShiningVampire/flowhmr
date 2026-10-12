@@ -1,0 +1,5 @@
+run_v2m_demo_generation.py: new --max_gpu_mem_gb flag caps the process on a shared GPU (used for this run: 14 GB cap next to five training jobs)
+tools/render_motion.py: offline SMPL-H mesh renderer (numpy + PIL + ffmpeg), mesh-only or side by side with the source video; no OpenGL, no browser
+docs/inference.md: new sections on visualizing the output and running on shared GPUs
+.gitignore: ignore output when it is a symlink to bulk storage (the output/ pattern missed symlinks)
+Branch feat/shared-gpu-cap-and-offline-render on github.com/TheShiningVampire/flowhmr
